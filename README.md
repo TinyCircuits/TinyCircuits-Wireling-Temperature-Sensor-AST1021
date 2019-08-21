@@ -1,4 +1,4 @@
-# TinyCircuits-Whisker-Temperature-Sensor
+# TinyCircuits Whisker Temperature Sensor
 # AST1021 Rev2
 
 The design files are located under design_files/ for the TinyCircuits AST1021 Rev 2 PCB. This is a whisker board which features the PCT2075 Temperature Senor with 11-bit output. You've probably already guessed correctly that this sensor helps you measure the temperature in a given environment.
