@@ -22,7 +22,7 @@ TinyCircuits_PCT2075 tempSensor = TinyCircuits_PCT2075();
 
 void setup() {
   SerialMonitorInterface.begin(9600);
-  while(!SerialMonitorInterface);
+  while(!SerialMonitorInterface);  // Blocks sensor printing data until Serial Monitor is opened
 
   // Enable and Power wirelings
   Wireling.begin();
