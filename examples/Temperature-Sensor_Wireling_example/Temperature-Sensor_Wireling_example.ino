@@ -10,11 +10,9 @@
 
 #include <Wire.h>
 #include "TinyCircuits_PCT2075.h"
+#include <Wireling.h>
 
 TinyCircuits_PCT2075 tempSensor = TinyCircuits_PCT2075();
-
-const int tempPin = 2;       //IO Pin D2 = Interrupt Pin 0
-volatile bool var = 0;
 
 #if defined (ARDUINO_ARCH_AVR)
 #define SerialMonitorInterface Serial
@@ -24,14 +22,14 @@ volatile bool var = 0;
 
 void setup() {
   SerialMonitorInterface.begin(9600);
-  while(!SerialMonitorInterface);
+  while(!SerialMonitorInterface);  // Blocks sensor printing data until Serial Monitor is opened
 
-  // For Wireling Adapter TinyShield
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH);
+  // Enable and Power wirelings
+  Wireling.begin();
   
   Wire.begin(); // begin I2C communication
-  selectPort(0);
+  Wireling.selectPort(0);
+//  const int tempPin = 0;       //IO Pin D2 = Interrupt Pin 0 
 
   //Initialize the sensor with config settings
   tempSensor.begin(PCT2075_ACTIVE_LOW, PCT2075_COMPARATOR, PCT2075_NORMAL, PCT2075_FAULT_6X);
@@ -43,7 +41,7 @@ void setup() {
 }
 
 void loop() {
-
+  setup();
   float rawTemp = tempSensor.readTemp() / 32.0; // Divide by 32 to get rid of empty 5 LSB
   float tempC = (rawTemp * 0.125); // Conversion to degreesC noted on page 11 of datasheet
   float tempF = (tempC * 1.8 + 32); // Conversion from degreeC to degreeF
@@ -72,9 +70,7 @@ void loop() {
     SerialMonitorInterface.print("0b");
     SerialMonitorInterface.print(tempSensor.readConfig(), BIN);
     SerialMonitorInterface.print("\t");
-    SerialMonitorInterface.print("Interrupt = ");
-    SerialMonitorInterface.print(var);
-    SerialMonitorInterface.print("\t"); 
+    SerialMonitorInterface.print("Mode = ");
     SerialMonitorInterface.println(tempSensor.checkMode()); 
     SerialMonitorInterface.println("---------------------------------------------------------------------------------------------------------------------------");
 
@@ -87,15 +83,4 @@ void loop() {
     tempSensor.wake(); 
     delay(250);  
   }
-}
-
-void selectPort(int port) {
-  Wire.beginTransmission(0x70);
-  Wire.write(0x04 + port);
-  Wire.endTransmission();
-}
-
-void interruptServiceRoutine() {
-  var = !var;
-  digitalWrite(13, var);
 }
