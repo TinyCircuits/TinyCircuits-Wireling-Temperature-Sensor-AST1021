@@ -9,7 +9,7 @@
  *************************************************************************/
 
 #include <Wire.h>
-#include "TinyCircuits_PCT2075.h"
+#include <TinyCircuits_PCT2075.h>
 #include <Wireling.h>
 
 TinyCircuits_PCT2075 tempSensor = TinyCircuits_PCT2075();
@@ -34,8 +34,8 @@ void setup() {
   //Initialize the sensor with config settings
   tempSensor.begin(PCT2075_ACTIVE_LOW, PCT2075_COMPARATOR, PCT2075_NORMAL, PCT2075_FAULT_6X);
 
-  pinMode(tempPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(tempPin), interruptServiceRoutine, FALLING);
+//  pinMode(tempPin, INPUT_PULLUP);
+//  attachInterrupt(digitalPinToInterrupt(tempPin), interruptServiceRoutine, FALLING);
 
   tempSensor.wake(); // Wake up the module
 }
