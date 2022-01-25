@@ -22,7 +22,7 @@ TinyCircuits_PCT2075 tempSensor = TinyCircuits_PCT2075();
 
 void setup() {
   SerialMonitorInterface.begin(9600);
-  while(!SerialMonitorInterface);  // Blocks sensor printing data until Serial Monitor is opened
+//  while(!SerialMonitorInterface);  // Blocks sensor printing data until Serial Monitor is opened
 
   // Enable and Power wirelings
   Wireling.begin();
@@ -41,7 +41,6 @@ void setup() {
 }
 
 void loop() {
-  setup();
   float rawTemp = tempSensor.readTemp() / 32.0; // Divide by 32 to get rid of empty 5 LSB
   float tempC = (rawTemp * 0.125); // Conversion to degreesC noted on page 11 of datasheet
   float tempF = (tempC * 1.8 + 32); // Conversion from degreeC to degreeF
